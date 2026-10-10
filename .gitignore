@@ -1,0 +1,16 @@
+# Secrets & local config
+*.pem
+*.key
+.env
+*.vault
+vault_pass*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
