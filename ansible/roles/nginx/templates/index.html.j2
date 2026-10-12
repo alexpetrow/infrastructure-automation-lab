@@ -1,0 +1,26 @@
+<!doctype html>
+<!-- {{ ansible_managed }} -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ ansible_facts['hostname'] }} | Infrastructure Automation Lab</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 4rem auto; padding: 0 1rem; color: #1f2937; }
+    h1 { margin-bottom: 0.25rem; }
+    .muted { color: #6b7280; }
+    table { border-collapse: collapse; margin-top: 1.5rem; width: 100%; }
+    td { padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb; }
+    td:first-child { color: #6b7280; width: 40%; }
+  </style>
+</head>
+<body>
+  <h1>{{ ansible_facts['hostname'] }}</h1>
+  <p class="muted">Configured automatically with Ansible</p>
+  <table>
+    <tr><td>IP address</td><td>{{ ansible_facts['default_ipv4']['address'] }}</td></tr>
+    <tr><td>Operating system</td><td>{{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}</td></tr>
+    <tr><td>Kernel</td><td>{{ ansible_facts['kernel'] }}</td></tr>
+    <tr><td>Role</td><td>Web server (nginx)</td></tr>
+  </table>
+</body>
+</html>

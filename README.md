@@ -12,7 +12,9 @@ without manual, error-prone configuration.
 ## Planned Scope
 - [x] Automation user and SSH hardening
 - [x] Firewall rules
-- [ ] Base packages, Nginx, Docker
+- [x] Base packages
+- [x] Nginx web server with health endpoint
+- [ ] Docker host
 - [ ] Security hardening
 - [x] Automatic updates and logging
 - [ ] Python health-check tool
@@ -42,6 +44,12 @@ Every pull request runs `ansible-lint` in GitHub Actions. The `main` branch is p
 merging is blocked until the check passes.
 
 ![Pull request blocked by failing lint check](docs/images/ci-blocked-pr.png)
+
+### Web server
+`node01` serves a page generated from a Jinja2 template with host facts.
+Configuration is tested with `nginx -t` before every reload.
+
+![Web page served by node01](docs/images/nginx-node01.png)
 
 ## Security
 
