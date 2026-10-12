@@ -6,3 +6,4 @@
     - common
     - users
     - ssh_hardening
+    - firewall

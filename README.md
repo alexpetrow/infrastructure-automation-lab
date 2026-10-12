@@ -10,7 +10,7 @@ without manual, error-prone configuration.
 
 ## Planned Scope
 - [x] Automation user and SSH hardening
-- [ ] Firewall rules
+- [x] Firewall rules
 - [ ] Base packages, Nginx, Docker
 - [ ] Security hardening
 - [x] Automatic updates and logging
@@ -29,6 +29,13 @@ which shows that the configuration is idempotent and safe to re-apply.
 
 ![Second playbook run with changed=0](docs/images/idempotency-second-run.png)
 
+### Firewall
+Default deny for incoming traffic. SSH is allowed only from the lab subnet with rate limiting.
+A test HTTP server on port 8080 is reachable locally but blocked from the network.
+
+![UFW status](docs/images/ufw-status.png)
+![Blocked port test](docs/images/ufw-blocked-port.png)
+
 ## Security
 
 ### Lab vs Production
@@ -40,7 +47,7 @@ and the table below shows what I would do differently in production.
 | Control node SSH key | Ed25519 key without passphrase, used for automation | Passphrase-protected key with ssh-agent, or short-lived SSH certificates (e.g. HashiCorp Vault SSH CA) |
 | Privilege escalation | Dedicated `ansible` user with key-only SSH access and passwordless sudo (`NOPASSWD:ALL`) | Sudo rules scoped to required commands, short-lived credentials, access audited centrally |
 | SSH access | Key-only authentication, root login disabled, `AllowUsers` allowlist, config validated with `sshd -t` before applying | Same, plus SSH reachable only from a bastion or VPN, and centralized auth (e.g. SSH CA or SSO) |
-| Network | Flat home network | Isolated management network/VLAN, SSH reachable only from bastion or VPN |
+| Network | UFW on every node: default deny incoming, SSH allowed only from the lab subnet with rate limiting | Isolated management network/VLAN, cloud security groups or network firewalls, SSH reachable only via bastion or VPN |
 | IP addresses | Private RFC 1918 lab addresses in the inventory | Dynamic inventory from the cloud provider or CMDB, no hardcoded addresses |
 
 ### Secrets
