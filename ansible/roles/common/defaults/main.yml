@@ -1,0 +1,20 @@
+---
+# Base packages installed on every server
+common_packages:
+  - vim
+  - curl
+  - wget
+  - htop
+  - git
+  - unzip
+  - jq
+  - tree
+  - ca-certificates
+
+common_timezone: Europe/Sofia
+
+# Automatic security updates
+common_unattended_upgrades: true
+
+# Limit how much disk space system logs can use
+common_journald_max_use: 500M
