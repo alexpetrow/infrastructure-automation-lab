@@ -1,0 +1,3 @@
+---
+firewall_allowed_rules:
+  - { port: "80", proto: tcp, comment: "HTTP" }

@@ -1,0 +1,6 @@
+---
+- name: Bootstrap all servers
+  ansible.builtin.import_playbook: bootstrap.yml
+
+- name: Configure web servers
+  ansible.builtin.import_playbook: webservers.yml
