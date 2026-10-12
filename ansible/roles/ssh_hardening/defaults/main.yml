@@ -1,0 +1,5 @@
+---
+ssh_hardening_allow_users:
+  - alex
+  - ansible
+ssh_hardening_max_auth_tries: 3
