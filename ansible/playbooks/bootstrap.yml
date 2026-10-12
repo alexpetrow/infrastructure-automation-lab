@@ -1,0 +1,6 @@
+---
+- name: Bootstrap base server configuration
+  hosts: lab_nodes
+  become: true
+  roles:
+    - common

@@ -12,13 +12,21 @@ without manual, error-prone configuration.
 - [ ] Users, SSH access and firewall rules
 - [ ] Base packages, Nginx, Docker
 - [ ] Security hardening
-- [ ] Automatic updates and logging
+- [x] Automatic updates and logging
 - [ ] Python health-check tool
 - [ ] Idempotent runs
 - [ ] CI: linting and tests on every pull request
 
 ## Tech Stack
 Ansible · Linux (Ubuntu Server) · Python · Bash · GitHub Actions
+
+## Evidence
+
+### Idempotency
+The second run of the bootstrap playbook makes no changes (`changed=0`),
+which shows that the configuration is idempotent and safe to re-apply.
+
+![Second playbook run with changed=0](docs/images/idempotency-second-run.png)
 
 ## Security
 
