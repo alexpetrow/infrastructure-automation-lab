@@ -1,0 +1,21 @@
+---
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  ansible-lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Run ansible-lint
+        uses: ansible/ansible-lint@v26.10.0
