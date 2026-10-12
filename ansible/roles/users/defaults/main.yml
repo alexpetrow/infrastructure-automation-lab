@@ -1,0 +1,3 @@
+---
+users_automation_name: ansible
+users_automation_pubkey_path: ~/.ssh/id_ed25519.pub
