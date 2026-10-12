@@ -1,4 +1,5 @@
 # Infrastructure Automation Lab
+[![CI](https://github.com/alexpetrow/infrastructure-automation-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/alexpetrow/infrastructure-automation-lab/actions/workflows/ci.yml)
 
 Automated provisioning, configuration and hardening of Linux servers using Ansible.
 
@@ -16,7 +17,7 @@ without manual, error-prone configuration.
 - [x] Automatic updates and logging
 - [ ] Python health-check tool
 - [ ] Idempotent runs
-- [ ] CI: linting and tests on every pull request
+- [x] CI: linting and tests on every pull request
 
 ## Tech Stack
 Ansible · Linux (Ubuntu Server) · Python · Bash · GitHub Actions
@@ -35,6 +36,12 @@ A test HTTP server on port 8080 is reachable locally but blocked from the networ
 
 ![UFW status](docs/images/ufw-status.png)
 ![Blocked port test](docs/images/ufw-blocked-port.png)
+
+### CI quality gate
+Every pull request runs `ansible-lint` in GitHub Actions. The `main` branch is protected:
+merging is blocked until the check passes.
+
+![Pull request blocked by failing lint check](docs/images/ci-blocked-pr.png)
 
 ## Security
 
