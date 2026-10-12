@@ -1,0 +1,10 @@
+---
+# Where SSH is allowed from (override per environment)
+firewall_ssh_allowed_from: any
+
+# Additional ports to open, e.g.:
+# firewall_allowed_rules:
+#   - { port: "80", proto: tcp, comment: "HTTP" }
+firewall_allowed_rules: []
+
+firewall_logging: low
