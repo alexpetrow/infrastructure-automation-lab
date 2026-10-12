@@ -1,0 +1,22 @@
+---
+- name: Create automation user
+  ansible.builtin.user:
+    name: "{{ users_automation_name }}"
+    shell: /bin/bash
+    create_home: true
+    comment: "Ansible automation account"
+
+- name: Authorize SSH key for automation user
+  ansible.posix.authorized_key:
+    user: "{{ users_automation_name }}"
+    key: "{{ lookup('ansible.builtin.file', users_automation_pubkey_path) }}"
+    exclusive: true
+
+- name: Allow automation user to use sudo without password
+  ansible.builtin.copy:
+    dest: "/etc/sudoers.d/{{ users_automation_name }}"
+    content: "{{ users_automation_name }} ALL=(ALL) NOPASSWD:ALL\n"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: "visudo -cf %s"

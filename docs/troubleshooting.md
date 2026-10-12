@@ -14,3 +14,20 @@ Reported in Launchpad bug #2122414.
 
 **Alternative:** Switch the system default with
 `sudo update-alternatives --set sudo /usr/bin/sudo.ws` (changes behavior for all users).
+
+## Locked out after SSH hardening
+
+**Symptom:** `Permission denied (publickey)` for a user that should have access.
+
+**Checks:**
+- The user is listed in `AllowUsers` (`ssh_hardening_allow_users`).
+- The public key is in `~/.ssh/authorized_keys` of that user.
+- `sudo sshd -T | grep -i -E 'passwordauthentication|allowusers|permitrootlogin'`
+  shows the effective configuration after all drop-in files are merged.
+
+**Recovery:** Use the VM console (VNC in the lab, serial console or cloud provider console
+in production), fix or remove `/etc/ssh/sshd_config.d/10-hardening.conf`,
+then run `sudo systemctl restart ssh`.
+
+**Prevention:** Keep an active SSH session open while applying SSH changes,
+and validate configuration with `sshd -t` before restarting the service.

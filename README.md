@@ -9,7 +9,8 @@ A company needs to prepare multiple Linux servers consistently, securely and rep
 without manual, error-prone configuration.
 
 ## Planned Scope
-- [ ] Users, SSH access and firewall rules
+- [x] Automation user and SSH hardening
+- [ ] Firewall rules
 - [ ] Base packages, Nginx, Docker
 - [ ] Security hardening
 - [x] Automatic updates and logging
@@ -37,7 +38,8 @@ and the table below shows what I would do differently in production.
 | Area | Lab setup | Production approach |
 |---|---|---|
 | Control node SSH key | Ed25519 key without passphrase, used for automation | Passphrase-protected key with ssh-agent, or short-lived SSH certificates (e.g. HashiCorp Vault SSH CA) |
-| Privilege escalation | Interactive sudo password (`--ask-become-pass`) | Dedicated automation user with scoped sudo rules, secrets stored in Ansible Vault or a secrets manager |
+| Privilege escalation | Dedicated `ansible` user with key-only SSH access and passwordless sudo (`NOPASSWD:ALL`) | Sudo rules scoped to required commands, short-lived credentials, access audited centrally |
+| SSH access | Key-only authentication, root login disabled, `AllowUsers` allowlist, config validated with `sshd -t` before applying | Same, plus SSH reachable only from a bastion or VPN, and centralized auth (e.g. SSH CA or SSO) |
 | Network | Flat home network | Isolated management network/VLAN, SSH reachable only from bastion or VPN |
 | IP addresses | Private RFC 1918 lab addresses in the inventory | Dynamic inventory from the cloud provider or CMDB, no hardcoded addresses |
 
