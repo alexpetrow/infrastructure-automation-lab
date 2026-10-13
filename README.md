@@ -17,12 +17,30 @@ without manual, error-prone configuration.
 - [x] Docker host
 - [ ] Security hardening
 - [x] Automatic updates and logging
-- [ ] Python health-check tool
-- [ ] Idempotent runs
+- [x] Python health-check tool
+- [x] Idempotent runs
 - [x] CI: linting and tests on every pull request
 
 ## Tech Stack
 Ansible · Linux (Ubuntu Server) · Python · Bash · GitHub Actions
+
+## Health Check
+
+`scripts/health_check.py` reads hosts from the Ansible inventory and verifies the expected
+state of each server based on its groups:
+
+| Group | Checks |
+|---|---|
+| `lab_nodes` | SSH reachable, `ssh` and `ufw` services active, port 8080 closed |
+| `webservers` | `nginx` active, `/health` returns HTTP 200 `ok` |
+| `docker_hosts` | `docker` active, port 80 closed (detects containers bypassing UFW) |
+
+```bash
+./scripts/health_check.py          # human-readable report
+./scripts/health_check.py --json   # machine-readable output
+```
+
+Exit codes: `0` all checks passed, `1` at least one check failed, `2` inventory could not be loaded.
 
 ## Evidence
 
@@ -57,6 +75,13 @@ The lab demonstrates the issue and the mitigation: binding container ports to lo
 
 ![Published port reachable despite UFW](docs/images/docker-ufw-bypass.png)
 ![Localhost-bound port not reachable from network](docs/images/docker-localhost-bind.png)
+
+### Detect and remediate
+The health check detects a stopped nginx service, Ansible restores the desired state,
+and the health check confirms recovery.
+
+![Health check detects failure](docs/images/healthcheck-fail.png)
+![Health check after remediation](docs/images/healthcheck-pass.png)
 
 ## Security
 | Docker access | Official Docker CE repository with GPG-signed packages; `alex` in the `docker` group (root-equivalent, documented); container log size limited | Rootless Docker or sudo-only access; image scanning; container ports bound to localhost or filtered in `DOCKER-USER` |
