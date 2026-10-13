@@ -15,7 +15,7 @@ without manual, error-prone configuration.
 - [x] Base packages
 - [x] Nginx web server with health endpoint
 - [x] Docker host
-- [ ] Security hardening
+- [x] Security hardening
 - [x] Automatic updates and logging
 - [x] Python health-check tool
 - [x] Idempotent runs
@@ -85,6 +85,7 @@ and the health check confirms recovery.
 
 ## Security
 | Docker access | Official Docker CE repository with GPG-signed packages; `alex` in the `docker` group (root-equivalent, documented); container log size limited | Rootless Docker or sudo-only access; image scanning; container ports bound to localhost or filtered in `DOCKER-USER` |
+| Kernel hardening | sysctl settings based on CIS Benchmark (ICMP redirects, source routing, SYN cookies, kernel pointer and log restrictions); IP forwarding kept on for Docker | Full CIS Benchmark compliance scanned with tools like Lynis or OpenSCAP, exceptions documented and approved |
 
 ### Lab vs Production
 This project runs in a self-hosted home lab. Some choices are simplified on purpose,
