@@ -4,3 +4,6 @@
 
 - name: Configure web servers
   ansible.builtin.import_playbook: webservers.yml
+
+- name: Configure Docker hosts
+  ansible.builtin.import_playbook: docker_hosts.yml

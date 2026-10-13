@@ -31,3 +31,20 @@ then run `sudo systemctl restart ssh`.
 
 **Prevention:** Keep an active SSH session open while applying SSH changes,
 and validate configuration with `sshd -t` before restarting the service.
+
+## Docker published ports bypass UFW
+
+**Symptom:** A container started with `-p 8080:80` is reachable from the network,
+even though UFW is set to default deny and port 8080 is not allowed.
+
+**Root cause:** Docker manages its own iptables rules for port publishing and inserts them
+before the UFW chains. Traffic to published ports never reaches UFW rules.
+
+**Mitigation used in this lab:**
+- Publish container ports on localhost only: `-p 127.0.0.1:8080:80`.
+- Expose services through a reverse proxy (nginx) on ports explicitly allowed in UFW.
+
+**Production options:**
+- Filter traffic in the `DOCKER-USER` iptables chain, which Docker evaluates before its own rules.
+- Cloud security groups or network firewalls in front of the host.
+- Never rely on host firewall alone for containers with published ports.
