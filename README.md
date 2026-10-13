@@ -14,7 +14,7 @@ without manual, error-prone configuration.
 - [x] Firewall rules
 - [x] Base packages
 - [x] Nginx web server with health endpoint
-- [ ] Docker host
+- [x] Docker host
 - [ ] Security hardening
 - [x] Automatic updates and logging
 - [ ] Python health-check tool
@@ -51,7 +51,15 @@ Configuration is tested with `nginx -t` before every reload.
 
 ![Web page served by node01](docs/images/nginx-node01.png)
 
+### Docker and firewall interaction
+Docker publishes container ports through its own iptables rules, bypassing UFW.
+The lab demonstrates the issue and the mitigation: binding container ports to localhost.
+
+![Published port reachable despite UFW](docs/images/docker-ufw-bypass.png)
+![Localhost-bound port not reachable from network](docs/images/docker-localhost-bind.png)
+
 ## Security
+| Docker access | Official Docker CE repository with GPG-signed packages; `alex` in the `docker` group (root-equivalent, documented); container log size limited | Rootless Docker or sudo-only access; image scanning; container ports bound to localhost or filtered in `DOCKER-USER` |
 
 ### Lab vs Production
 This project runs in a self-hosted home lab. Some choices are simplified on purpose,
