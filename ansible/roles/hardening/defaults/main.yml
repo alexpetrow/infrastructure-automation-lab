@@ -1,0 +1,28 @@
+---
+# Kernel and network hardening (based on CIS Benchmark recommendations)
+# Note: net.ipv4.ip_forward is intentionally NOT disabled,
+# because Docker hosts need IP forwarding for container networking.
+hardening_sysctl:
+  # Ignore ICMP redirects (prevents traffic being rerouted by an attacker)
+  net.ipv4.conf.all.accept_redirects: 0
+  net.ipv4.conf.default.accept_redirects: 0
+  net.ipv6.conf.all.accept_redirects: 0
+  net.ipv6.conf.default.accept_redirects: 0
+  # Do not send ICMP redirects (servers are not routers)
+  net.ipv4.conf.all.send_redirects: 0
+  net.ipv4.conf.default.send_redirects: 0
+  # Reject source-routed packets
+  net.ipv4.conf.all.accept_source_route: 0
+  net.ipv6.conf.all.accept_source_route: 0
+  # Log packets with impossible source addresses
+  net.ipv4.conf.all.log_martians: 1
+  # Protection against SYN flood attacks
+  net.ipv4.tcp_syncookies: 1
+  # Ignore broadcast pings (smurf attack protection)
+  net.ipv4.icmp_echo_ignore_broadcasts: 1
+  # Hide kernel memory addresses from unprivileged users
+  kernel.kptr_restrict: 2
+  # Only root can read the kernel log
+  kernel.dmesg_restrict: 1
+  # No core dumps from setuid programs (may contain sensitive data)
+  fs.suid_dumpable: 0
