@@ -1,0 +1,30 @@
+---
+# Packages from the distribution that conflict with Docker CE
+docker_conflicting_packages:
+  - docker.io
+  - docker-compose
+  - docker-compose-v2
+  - docker-doc
+  - podman-docker
+  - containerd
+  - runc
+
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin
+
+docker_apt_arch: amd64
+
+# Users allowed to run docker without sudo (root-equivalent access!)
+docker_users: []
+
+# Written to /etc/docker/daemon.json
+docker_daemon_options:
+  log-driver: json-file
+  log-opts:
+    max-size: "10m"
+    max-file: "3"
+  live-restore: true
