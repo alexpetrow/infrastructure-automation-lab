@@ -45,3 +45,15 @@
     group: root
     mode: "0644"
   notify: Restart journald
+
+- name: Extend root logical volume to use all free space in the volume group
+  community.general.lvol:
+    vg: "{{ common_root_vg }}"
+    lv: "{{ common_root_lv }}"
+    size: +100%FREE
+    resizefs: true
+  when:
+    - common_extend_root_lv
+    - ansible_facts['lvm'] is defined
+    - common_root_vg in (ansible_facts['lvm']['vgs'] | default({}))
+    - (ansible_facts['lvm']['vgs'][common_root_vg]['free_g'] | float) > 0

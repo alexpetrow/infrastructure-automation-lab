@@ -48,3 +48,23 @@ before the UFW chains. Traffic to published ports never reaches UFW rules.
 - Filter traffic in the `DOCKER-USER` iptables chain, which Docker evaluates before its own rules.
 - Cloud security groups or network firewalls in front of the host.
 - Never rely on host firewall alone for containers with published ports.
+
+## Disk full: root volume uses only half of the disk
+
+**Symptom:** `no space left on device` (seen on the control node during `terraform init`),
+although the VM disk is 20 GB.
+
+**Root cause:** The Ubuntu Server installer with LVM allocates only part of the volume group
+to the root logical volume and leaves the rest unallocated.
+`df -h /` shows about 10 GB, while `sudo vgs` shows free space in `VFree`.
+
+**Fix (manual, control node):**
+`sudo lvextend -r -l +100%FREE /dev/ubuntu-vg/ubuntu-lv`
+extends the logical volume and the filesystem online, without reboot.
+
+**Prevention (automated, managed nodes):** The `common` role extends the root logical volume
+whenever the volume group has free space. The task is skipped on hosts without LVM
+or without free space, so it is safe to re-run.
+
+**Related:** Terraform downloads a separate copy of each provider (~700 MB for AWS) per
+working directory. A shared `plugin_cache_dir` in `~/.terraformrc` avoids duplicates.

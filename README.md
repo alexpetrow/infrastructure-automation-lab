@@ -103,7 +103,7 @@ flowchart LR
 
 | Role | Applied to | What it does |
 |---|---|---|
-| `common` | all nodes | Base packages, timezone, unattended security upgrades, journald size limit |
+| `common` | all nodes | Base packages, timezone, unattended security upgrades, journald size limit, extends root LVM volume to the full disk |
 | `users` | all nodes | Creates `ansible` user, authorizes the control node key, sudo rule validated with `visudo` |
 | `ssh_hardening` | all nodes | sshd drop-in config validated with `sshd -t` before restart |
 | `hardening` | all nodes | CIS-based sysctl settings, with IP forwarding kept on for Docker |
@@ -217,6 +217,8 @@ Problems found while building the lab, documented in [docs/troubleshooting.md](d
   detects the issue if it comes back.
 - **SSH lockout risk:** sshd reads drop-in files in order and the first value wins, so the
   hardening file is named `10-` to take priority over `50-cloud-init.conf`.
+- **Disk full on a 20 GB VM:** the Ubuntu LVM installer used only half of the disk.
+  Fixed manually on the control node, then automated in the `common` role for all managed nodes.
 
 ## Evidence
 
