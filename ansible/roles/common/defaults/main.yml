@@ -18,3 +18,8 @@ common_unattended_upgrades: true
 
 # Limit how much disk space system logs can use
 common_journald_max_use: 500M
+
+# Ubuntu's LVM install leaves about half of the disk unallocated
+common_extend_root_lv: true
+common_root_vg: ubuntu-vg
+common_root_lv: ubuntu-lv
