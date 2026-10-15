@@ -68,3 +68,13 @@ or without free space, so it is safe to re-run.
 
 **Related:** Terraform downloads a separate copy of each provider (~700 MB for AWS) per
 working directory. A shared `plugin_cache_dir` in `~/.terraformrc` avoids duplicates.
+
+## Python tools fail with "NumPy was built with baseline optimizations (X86_V2)"
+
+**Root cause:** TrueNAS VMs use a generic emulated CPU model by default, which does not expose
+x86-64-v2 instructions (SSE4.2, POPCNT). Recent NumPy builds require them.
+
+**Check:** `/lib64/ld-linux-x86-64.so.2 --help | grep "x86-64-v"` shows `x86-64-v2` without `(supported)`.
+
+**Fix:** VM → Edit → CPU Mode → Host Passthrough, then restart the VM.
+The VM sees the real CPU features. Trade-off: no live migration to hosts with a different CPU.
